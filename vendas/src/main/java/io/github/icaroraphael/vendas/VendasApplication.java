@@ -19,9 +19,18 @@ public class VendasApplication {
 			clienteRepository.save(new Cliente("Fulano"));
 			clienteRepository.save(new Cliente("Outro Cliente"));
 
-			boolean existe = clienteRepository.existsByNome("Dougllas");
-			System.out.println("Existe um cliente com o nome 'Dougllas': " + existe);
+			System.out.println("PESQUISANDO CLIENTES:");
+			List<Cliente> result = clienteRepository.encontrarPorNome("Fu");
+			result.forEach(System.out::println);
 
+			System.out.println("LISTANDO TODOS OS CLIENTES:");
+			clienteRepository.findAll().forEach(System.out::println);
+
+			System.out.println("DELETANDO O CLIENTE FULANO:");
+			clienteRepository.deletarPorNome("Fulano");
+
+			System.out.println("LISTANDO TODOS OS CLIENTES:");
+			clienteRepository.findAll().forEach(System.out::println);
 
 		};
 	}
