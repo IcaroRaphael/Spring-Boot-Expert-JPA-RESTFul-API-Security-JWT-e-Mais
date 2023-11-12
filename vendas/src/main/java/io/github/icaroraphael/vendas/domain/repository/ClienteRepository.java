@@ -13,16 +13,17 @@ import java.util.List;
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
 
-//    @Query(value = "select c from Cliente c where c.nome like %:nome%")
     @Query(value = "select * from Cliente c where c.nome like %:nome%", nativeQuery = true)
     List<Cliente> encontrarPorNome(@Param("nome") String nome);
 
-    List<Cliente> findByNomeOrIdOrderById(String nome, Integer id);
+    @Transactional
+    @Modifying
+    @Query("delete from Cliente c where c.nome = :nome")
+    void deletarPorNome(@Param("nome") String nome);
 
     boolean existsByNome(String nome);
 
-    @Transactional
-    @Modifying
-    @Query("DELETE FROM Cliente c WHERE c.nome = :nome")
-    void deletarPorNome(@Param("nome") String nome);
+    @Query("select c from Cliente c left join fetch c.pedidos where c.id = :id")
+    Cliente findClienteFetchPedidos(@Param("id") Integer id);
+
 }
