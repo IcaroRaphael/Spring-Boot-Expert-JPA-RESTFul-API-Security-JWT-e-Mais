@@ -49,13 +49,13 @@ public class ProdutoController {
 
     @GetMapping("{id}")
     @ResponseStatus(OK)
-    public Produto getById(@PathVariable Integer id){
+    public Produto findById(@PathVariable Integer id){
         return repository.findById(id)
                 .orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado."));
     }
 
     @GetMapping
-    public List<Produto> find(Produto filtro){
+    public List<Produto> findAll(Produto filtro){
         ExampleMatcher matcher = ExampleMatcher
                 .matching()
                 .withIgnoreCase()

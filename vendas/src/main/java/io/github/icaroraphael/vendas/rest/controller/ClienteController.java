@@ -18,7 +18,7 @@ public class ClienteController {
     private ClienteRepository repository;
 
     @GetMapping(value = "/{id}")
-    public Cliente getClienteById(@PathVariable Integer id){
+    public Cliente findById(@PathVariable Integer id){
         return repository.findById(id)
                   .orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado"));
     }
@@ -54,7 +54,7 @@ public class ClienteController {
     }
 
     @GetMapping
-    public List<Cliente> find(Cliente filtro){
+    public List<Cliente> findAll(Cliente filtro){
         ExampleMatcher matcher = ExampleMatcher
                 .matching()
                 .withIgnoreCase()
