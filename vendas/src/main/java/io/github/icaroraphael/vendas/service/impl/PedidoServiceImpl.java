@@ -36,35 +36,36 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Override
     @Transactional
-    public Pedido salvar(PedidoDTO dto) {
+    public Pedido salvar( PedidoDTO dto ) {
         Integer idCliente = dto.getCliente();
         Cliente cliente = clienteRepository
                 .findById(idCliente)
-                .orElseThrow(() -> new RegraNegocioException("Código de cliente inválido"));
+                .orElseThrow(() -> new RegraNegocioException("Código de cliente inválido."));
 
         Pedido pedido = new Pedido();
         pedido.setTotal(dto.getTotal());
         pedido.setDataPedido(LocalDate.now());
         pedido.setCliente(cliente);
 
-        List<ItemPedido> itensPedido = converterItens(pedido, dto.getItens());
+        List<ItemPedido> itemsPedido = converterItens(pedido, dto.getItens());
         pedidoRepository.save(pedido);
-        itemPedidoRepository.saveAll(itensPedido);
-        pedido.setItens(itensPedido);
+        itemPedidoRepository.saveAll(itemsPedido);
+        pedido.setItens(itemsPedido);
         return pedido;
     }
 
-    private List<ItemPedido> converterItens(Pedido pedido, List<ItemPedidoDTO> itens){
-        if(itens.isEmpty()){
-            throw new RegraNegocioException("Não é possível realizar um pedido sem itens.");
+    private List<ItemPedido> converterItens(Pedido pedido, List<ItemPedidoDTO> items){
+        if(items.isEmpty()){
+            throw new RegraNegocioException("Não é possível realizar um pedido sem items.");
         }
-        return itens
+
+        return items
                 .stream()
                 .map( dto -> {
                     Integer idProduto = dto.getProduto();
                     Produto produto = produtoRepository
                             .findById(idProduto)
-                            .orElseThrow(() ->  new RegraNegocioException("Código de produto inválido: " + idProduto));
+                            .orElseThrow(() -> new RegraNegocioException("Código de produto inválido: "+ idProduto));
 
                     ItemPedido itemPedido = new ItemPedido();
                     itemPedido.setQuantidade(dto.getQuantidade());
@@ -72,5 +73,6 @@ public class PedidoServiceImpl implements PedidoService {
                     itemPedido.setProduto(produto);
                     return itemPedido;
                 }).collect(Collectors.toList());
+
     }
 }
