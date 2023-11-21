@@ -1,5 +1,6 @@
 package io.github.icaroraphael.vendas.rest.controller;
 
+import io.github.icaroraphael.vendas.exception.PedidoNaoEncontradoException;
 import io.github.icaroraphael.vendas.exception.RegraNegocioException;
 import io.github.icaroraphael.vendas.rest.ApiErrors;
 import org.springframework.http.HttpStatus;
@@ -14,5 +15,11 @@ public class ApplicationControllerAdvice {
     public ApiErrors handleRegraNegocioException(RegraNegocioException exception){
         String mensagemErro = exception.getMessage();
         return new ApiErrors(mensagemErro);
+    }
+
+    @ExceptionHandler(PedidoNaoEncontradoException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiErrors handlePedidoNotFoundException(PedidoNaoEncontradoException ex){
+        return new ApiErrors(ex.getMessage());
     }
 }
