@@ -4,6 +4,7 @@ import io.github.icaroraphael.vendas.domain.entity.Cliente;
 import io.github.icaroraphael.vendas.domain.entity.ItemPedido;
 import io.github.icaroraphael.vendas.domain.entity.Pedido;
 import io.github.icaroraphael.vendas.domain.entity.Produto;
+import io.github.icaroraphael.vendas.domain.enums.StatusPedido;
 import io.github.icaroraphael.vendas.domain.repository.ClienteRepository;
 import io.github.icaroraphael.vendas.domain.repository.ItemPedidoRepository;
 import io.github.icaroraphael.vendas.domain.repository.PedidoRepository;
@@ -47,6 +48,7 @@ public class PedidoServiceImpl implements PedidoService {
         pedido.setTotal(dto.getTotal());
         pedido.setDataPedido(LocalDate.now());
         pedido.setCliente(cliente);
+        pedido.setStatus(StatusPedido.REALIZADO);
 
         List<ItemPedido> itemsPedido = converterItens(pedido, dto.getItens());
         pedidoRepository.save(pedido);
