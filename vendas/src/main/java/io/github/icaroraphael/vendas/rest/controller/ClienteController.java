@@ -2,6 +2,7 @@ package io.github.icaroraphael.vendas.rest.controller;
 
 import io.github.icaroraphael.vendas.domain.entity.Cliente;
 import io.github.icaroraphael.vendas.domain.repository.ClienteRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -25,7 +26,7 @@ public class ClienteController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Cliente save (@RequestBody Cliente cliente){
+    public Cliente save (@RequestBody @Valid Cliente cliente){
         return repository.save(cliente);
     }
 
