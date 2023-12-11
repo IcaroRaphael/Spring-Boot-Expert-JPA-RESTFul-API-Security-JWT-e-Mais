@@ -8,6 +8,7 @@ import io.github.icaroraphael.vendas.rest.dto.InformacoesItemPedidoDTO;
 import io.github.icaroraphael.vendas.rest.dto.InformacoesPedidoDTO;
 import io.github.icaroraphael.vendas.rest.dto.PedidoDTO;
 import io.github.icaroraphael.vendas.service.PedidoService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +34,7 @@ public class PedidoController {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public Integer save( @RequestBody PedidoDTO dto ){
+    public Integer save( @RequestBody @Valid PedidoDTO dto ){
         Pedido pedido = service.salvar(dto);
         return pedido.getId();
     }
