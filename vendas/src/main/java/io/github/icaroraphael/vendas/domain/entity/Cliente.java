@@ -1,8 +1,8 @@
 package io.github.icaroraphael.vendas.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

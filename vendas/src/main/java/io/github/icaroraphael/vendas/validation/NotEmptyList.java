@@ -1,8 +1,8 @@
 package io.github.icaroraphael.vendas.validation;
 
 import io.github.icaroraphael.vendas.validation.constraintValidation.NotEmptyListValidator;
-import jakarta.validation.Constraint;
-import jakarta.validation.Payload;
+import javax.validation.Constraint;
+import javax.validation.Payload;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

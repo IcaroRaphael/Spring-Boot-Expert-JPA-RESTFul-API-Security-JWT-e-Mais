@@ -1,7 +1,7 @@
 package io.github.icaroraphael.vendas.domain.entity;
 
 import io.github.icaroraphael.vendas.domain.enums.StatusPedido;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
