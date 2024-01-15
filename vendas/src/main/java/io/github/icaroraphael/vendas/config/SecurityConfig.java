@@ -20,7 +20,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(passwordEncoder())
                 .withUser("fulano")
                 .password(passwordEncoder().encode("123"))
-                .roles("USER");
+                .roles("USER", "ADMIN");
     }
 
     @Override
