@@ -1,12 +1,12 @@
 package io.github.icaroraphael.vendas.rest;
 
-import lombok.Data;
 import lombok.Getter;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class ApiErrors {
+
     @Getter
     private List<String> errors;
 
@@ -14,7 +14,7 @@ public class ApiErrors {
         this.errors = errors;
     }
 
-    public ApiErrors(String mensagemErro) {
+    public ApiErrors(String mensagemErro){
         this.errors = Arrays.asList(mensagemErro);
     }
 }

@@ -8,22 +8,24 @@ import lombok.*;
 
 import java.math.BigDecimal;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 @Entity
 @Table(name = "produto")
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
 public class Produto {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private Integer Id;
+    private Integer id;
 
     @Column(name = "descricao")
     @NotEmpty(message = "{campo.descricao.obrigatorio}")
-    private String decricao;
+    private String descricao;
 
     @Column(name = "preco_unitario")
     @NotNull(message = "{campo.preco.obrigatorio}")
     private BigDecimal preco;
+
 }

@@ -15,6 +15,7 @@ import javax.validation.constraints.NotEmpty;
 @Entity
 @Table(name = "usuario")
 public class Usuario {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -26,4 +27,5 @@ public class Usuario {
     private String senha;
     @Column
     private boolean admin;
+
 }

@@ -5,16 +5,16 @@ import io.github.icaroraphael.vendas.domain.entity.ItemPedido;
 import io.github.icaroraphael.vendas.domain.entity.Pedido;
 import io.github.icaroraphael.vendas.domain.entity.Produto;
 import io.github.icaroraphael.vendas.domain.enums.StatusPedido;
-import io.github.icaroraphael.vendas.domain.repository.ClienteRepository;
-import io.github.icaroraphael.vendas.domain.repository.ItemPedidoRepository;
-import io.github.icaroraphael.vendas.domain.repository.PedidoRepository;
-import io.github.icaroraphael.vendas.domain.repository.ProdutoRepository;
+import io.github.icaroraphael.vendas.domain.repository.Clientes;
+import io.github.icaroraphael.vendas.domain.repository.ItemsPedido;
+import io.github.icaroraphael.vendas.domain.repository.Pedidos;
+import io.github.icaroraphael.vendas.domain.repository.Produtos;
 import io.github.icaroraphael.vendas.exception.PedidoNaoEncontradoException;
 import io.github.icaroraphael.vendas.exception.RegraNegocioException;
 import io.github.icaroraphael.vendas.rest.dto.ItemPedidoDTO;
 import io.github.icaroraphael.vendas.rest.dto.PedidoDTO;
 import io.github.icaroraphael.vendas.service.PedidoService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,24 +24,19 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class PedidoServiceImpl implements PedidoService {
-    @Autowired
-    private PedidoRepository pedidoRepository;
 
-    @Autowired
-    private ClienteRepository clienteRepository;
-
-    @Autowired
-    private ProdutoRepository produtoRepository;
-
-    @Autowired
-    ItemPedidoRepository itemPedidoRepository;
+    private final Pedidos repository;
+    private final Clientes clientesRepository;
+    private final Produtos produtosRepository;
+    private final ItemsPedido itemsPedidoRepository;
 
     @Override
     @Transactional
     public Pedido salvar( PedidoDTO dto ) {
         Integer idCliente = dto.getCliente();
-        Cliente cliente = clienteRepository
+        Cliente cliente = clientesRepository
                 .findById(idCliente)
                 .orElseThrow(() -> new RegraNegocioException("Código de cliente inválido."));
 
@@ -51,30 +46,30 @@ public class PedidoServiceImpl implements PedidoService {
         pedido.setCliente(cliente);
         pedido.setStatus(StatusPedido.REALIZADO);
 
-        List<ItemPedido> itemsPedido = converterItens(pedido, dto.getItens());
-        pedidoRepository.save(pedido);
-        itemPedidoRepository.saveAll(itemsPedido);
+        List<ItemPedido> itemsPedido = converterItems(pedido, dto.getItems());
+        repository.save(pedido);
+        itemsPedidoRepository.saveAll(itemsPedido);
         pedido.setItens(itemsPedido);
         return pedido;
     }
 
     @Override
     public Optional<Pedido> obterPedidoCompleto(Integer id) {
-        return pedidoRepository.findByIdFetchItens(id);
+        return repository.findByIdFetchItens(id);
     }
 
     @Override
     @Transactional
-    public void atualizaStatus(Integer id, StatusPedido statusPedido) {
-        pedidoRepository
+    public void atualizaStatus( Integer id, StatusPedido statusPedido ) {
+        repository
                 .findById(id)
-                .map(pedido -> {
+                .map( pedido -> {
                     pedido.setStatus(statusPedido);
-                    return pedidoRepository.save(pedido);
-                }).orElseThrow(() -> new PedidoNaoEncontradoException());
+                    return repository.save(pedido);
+                }).orElseThrow(() -> new PedidoNaoEncontradoException() );
     }
 
-    private List<ItemPedido> converterItens(Pedido pedido, List<ItemPedidoDTO> items){
+    private List<ItemPedido> converterItems(Pedido pedido, List<ItemPedidoDTO> items){
         if(items.isEmpty()){
             throw new RegraNegocioException("Não é possível realizar um pedido sem items.");
         }
@@ -83,9 +78,12 @@ public class PedidoServiceImpl implements PedidoService {
                 .stream()
                 .map( dto -> {
                     Integer idProduto = dto.getProduto();
-                    Produto produto = produtoRepository
+                    Produto produto = produtosRepository
                             .findById(idProduto)
-                            .orElseThrow(() -> new RegraNegocioException("Código de produto inválido: "+ idProduto));
+                            .orElseThrow(
+                                    () -> new RegraNegocioException(
+                                            "Código de produto inválido: "+ idProduto
+                                    ));
 
                     ItemPedido itemPedido = new ItemPedido();
                     itemPedido.setQuantidade(dto.getQuantidade());

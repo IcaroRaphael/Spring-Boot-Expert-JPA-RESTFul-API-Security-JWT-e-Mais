@@ -20,13 +20,14 @@ import javax.validation.Valid;
 @RequestMapping("/api/usuarios")
 @RequiredArgsConstructor
 public class UsuarioController {
+
     private final UsuarioServiceImpl usuarioService;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    private Usuario salvar(@RequestBody @Valid Usuario usuario){
+    public Usuario salvar( @RequestBody @Valid Usuario usuario ){
         String senhaCriptografada = passwordEncoder.encode(usuario.getSenha());
         usuario.setSenha(senhaCriptografada);
         return usuarioService.salvar(usuario);
@@ -45,4 +46,5 @@ public class UsuarioController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
+
 }

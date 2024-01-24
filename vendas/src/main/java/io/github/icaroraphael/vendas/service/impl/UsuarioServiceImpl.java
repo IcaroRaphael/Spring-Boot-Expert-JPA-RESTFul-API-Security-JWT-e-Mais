@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UsuarioServiceImpl implements UserDetailsService {
+
     @Autowired
     private PasswordEncoder encoder;
 
@@ -25,22 +26,24 @@ public class UsuarioServiceImpl implements UserDetailsService {
         return repository.save(usuario);
     }
 
-    public UserDetails autenticar(Usuario usuario){
+    public UserDetails autenticar( Usuario usuario ){
         UserDetails user = loadUserByUsername(usuario.getLogin());
-        boolean senhasBatem = encoder.matches(usuario.getSenha(), user.getPassword());
+        boolean senhasBatem = encoder.matches( usuario.getSenha(), user.getPassword() );
+
         if(senhasBatem){
             return user;
         }
+
         throw new SenhaInvalidaException();
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Usuario usuario = repository
-                .findByLogin(username)
+        Usuario usuario = repository.findByLogin(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado na base de dados."));
 
-        String[] roles = usuario.isAdmin() ? new String[]{"ADMIN", "USER"} : new String[]{"USER"};
+        String[] roles = usuario.isAdmin() ?
+                new String[]{"ADMIN", "USER"} : new String[]{"USER"};
 
         return User
                 .builder()
@@ -49,4 +52,5 @@ public class UsuarioServiceImpl implements UserDetailsService {
                 .roles(roles)
                 .build();
     }
+
 }
