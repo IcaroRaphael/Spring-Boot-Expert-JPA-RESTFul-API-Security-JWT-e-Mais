@@ -1,5 +1,6 @@
-package io.github.icaroraphael.vendas;
+package io.github.icaroraphael.vendas.security.jwt;
 
+import io.github.icaroraphael.vendas.VendasApplication;
 import io.github.icaroraphael.vendas.domain.entity.Usuario;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
