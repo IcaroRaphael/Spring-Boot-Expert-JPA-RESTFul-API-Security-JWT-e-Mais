@@ -15,7 +15,19 @@ public class LocalizacaoApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		listarCidades();
+		listarCidadesPorNome();
+		listarCidadesPorHabitantes();
+	}
+
+	public void listarCidadesPorNome(){
+		cidadeRepository.findByNome("Porto Velho").forEach(System.out::println);
+		cidadeRepository.findByNomeStartingWith("São").forEach(System.out::println);
+		cidadeRepository.findByNomeEndingWith("fe").forEach(System.out::println);
+		cidadeRepository.findByNomeContaining("Na").forEach(System.out::println);
+	}
+
+	public void listarCidadesPorHabitantes(){
+		cidadeRepository.findByHabitantes(11450000l).forEach(System.out::println);
 	}
 
 	@Transactional
