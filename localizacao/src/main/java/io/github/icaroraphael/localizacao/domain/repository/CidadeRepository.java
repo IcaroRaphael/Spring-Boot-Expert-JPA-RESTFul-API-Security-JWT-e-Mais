@@ -29,4 +29,13 @@ public interface CidadeRepository extends JpaRepository<Cidade, Long> {
 
     // Busca cidade pelo numero de habitantes
     List<Cidade> findByHabitantes(Long habitantes);
+
+    // Busca cidade com população menor que a do parâmetro
+    List<Cidade> findByHabitantesLessThan(Long habitantes);
+
+    // Busca cidade com população maior que a do parâmetro
+    List<Cidade> findByHabitantesGreaterThan(Long habitantes);
+
+    // Busca cidade com população menor que a do parâmetro e com determinado nome
+    List<Cidade> findByHabitantesLessThanAndNomeLike(Long habitantes, String nome);
 }
