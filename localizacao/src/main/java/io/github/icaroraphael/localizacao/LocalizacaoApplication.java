@@ -1,49 +1,21 @@
 package io.github.icaroraphael.localizacao;
 
-import io.github.icaroraphael.localizacao.domain.entity.Cidade;
-import io.github.icaroraphael.localizacao.domain.repository.CidadeRepository;
+import io.github.icaroraphael.localizacao.service.CidadeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootApplication
 public class LocalizacaoApplication implements CommandLineRunner {
 	@Autowired
-	private CidadeRepository cidadeRepository;
+	private CidadeService cidadeService;
 
 	@Override
 	public void run(String... args) throws Exception {
-		listarCidadesPorNome();
-		listarCidadesPorHabitantes();
-	}
-
-	public void listarCidadesPorNome(){
-		cidadeRepository.findByNome("Porto Velho").forEach(System.out::println);
-		cidadeRepository.findByNomeStartingWith("São").forEach(System.out::println);
-		cidadeRepository.findByNomeEndingWith("fe").forEach(System.out::println);
-		cidadeRepository.findByNomeContaining("Na").forEach(System.out::println);
-		cidadeRepository.findByNomeLike("%s%").forEach(System.out::println);
-		cidadeRepository.findByNomeContainingIgnoreCase("za").forEach(System.out::println);
-	}
-
-	public void listarCidadesPorHabitantes(){
-		cidadeRepository.findByHabitantes(11450000l).forEach(System.out::println);
-		cidadeRepository.findByHabitantesLessThan(1000000l).forEach(System.out::println);
-		cidadeRepository.findByHabitantesGreaterThan(1000000l).forEach(System.out::println);
-		cidadeRepository.findByHabitantesLessThanAndNomeLike(1000000l, "Natal").forEach(System.out::println);
-
-	}
-
-	@Transactional
-	public void salvarCidade(){
-		var cidade = new Cidade(1L, "São Paulo", 12396372L);
-		cidadeRepository.save(cidade);
-	}
-
-	public void listarCidades(){
-		cidadeRepository.findAll().forEach(System.out::println);
+		cidadeService.listarCidadesPorNome();
+		cidadeService.listarCidadesPorHabitantes();
+		cidadeService.listarCidades();
 	}
 
 	public static void main(String[] args) {

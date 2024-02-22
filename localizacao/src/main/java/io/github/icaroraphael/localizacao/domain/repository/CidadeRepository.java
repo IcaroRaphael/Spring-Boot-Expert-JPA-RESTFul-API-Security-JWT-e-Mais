@@ -1,12 +1,20 @@
 package io.github.icaroraphael.localizacao.domain.repository;
 
 import io.github.icaroraphael.localizacao.domain.entity.Cidade;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
 public interface CidadeRepository extends JpaRepository<Cidade, Long> {
+    // Busca todas as cidades ordenadas por parâmetro
+    List<Cidade> findAll(Sort sort);
+
+    // Busca todas as cidades paginadas
+    Page<Cidade> findAll(Pageable pageable);
 
     // Busca pelo nome
     List<Cidade> findByNome(String nome);
