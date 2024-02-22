@@ -1,5 +1,6 @@
 package io.github.icaroraphael.localizacao;
 
+import io.github.icaroraphael.localizacao.domain.entity.Cidade;
 import io.github.icaroraphael.localizacao.service.CidadeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -13,9 +14,11 @@ public class LocalizacaoApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		cidadeService.listarCidadesPorNome();
-		cidadeService.listarCidadesPorHabitantes();
-		cidadeService.listarCidades();
+//		cidadeService.listarCidadesPorNome();
+//		cidadeService.listarCidadesPorHabitantes();
+//		cidadeService.listarCidades();
+		var cidade = new Cidade(null, "porto", null);
+		cidadeService.filtroDinamico(cidade).forEach(System.out::println);
 	}
 
 	public static void main(String[] args) {

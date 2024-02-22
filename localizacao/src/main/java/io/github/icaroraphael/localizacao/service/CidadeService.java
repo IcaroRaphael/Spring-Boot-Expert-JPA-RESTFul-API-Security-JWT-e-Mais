@@ -3,11 +3,11 @@ package io.github.icaroraphael.localizacao.service;
 import io.github.icaroraphael.localizacao.domain.entity.Cidade;
 import io.github.icaroraphael.localizacao.domain.repository.CidadeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class CidadeService {
@@ -43,5 +43,15 @@ public class CidadeService {
 
         Pageable pageable = PageRequest.of(1, 2);
         cidadeRepository.findAll(pageable).forEach(System.out::println);
+    }
+
+    public List<Cidade> filtroDinamico(Cidade cidade){
+        ExampleMatcher matcher = ExampleMatcher
+                .matching()
+                .withIgnoreCase()
+                .withStringMatcher(ExampleMatcher.StringMatcher.STARTING);
+        Example<Cidade> example = Example.of(cidade, matcher);
+        return cidadeRepository.findAll(example);
+
     }
 }
