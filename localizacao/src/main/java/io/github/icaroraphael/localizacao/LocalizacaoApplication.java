@@ -17,8 +17,9 @@ public class LocalizacaoApplication implements CommandLineRunner {
 //		cidadeService.listarCidadesPorNome();
 //		cidadeService.listarCidadesPorHabitantes();
 //		cidadeService.listarCidades();
-		var cidade = new Cidade(null, "porto", null);
-		cidadeService.filtroDinamico(cidade).forEach(System.out::println);
+//		var cidade = new Cidade(null, "porto", null);
+//		cidadeService.filtroDinamico(cidade).forEach(System.out::println);
+		cidadeService.listarCidadesByNomeSpec();
 	}
 
 	public static void main(String[] args) {

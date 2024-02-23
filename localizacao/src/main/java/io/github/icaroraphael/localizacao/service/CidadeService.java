@@ -2,8 +2,10 @@ package io.github.icaroraphael.localizacao.service;
 
 import io.github.icaroraphael.localizacao.domain.entity.Cidade;
 import io.github.icaroraphael.localizacao.domain.repository.CidadeRepository;
+import io.github.icaroraphael.localizacao.domain.repository.specs.CidadeSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,5 +55,10 @@ public class CidadeService {
         Example<Cidade> example = Example.of(cidade, matcher);
         return cidadeRepository.findAll(example);
 
+    }
+
+    public void listarCidadesByNomeSpec(){
+        Specification<Cidade> specs = CidadeSpecs.nomeEqual("São Paulo").and(CidadeSpecs.habitantesGreaterThan(1000000));
+        cidadeRepository.findAll(specs).forEach(System.out::println);
     }
 }
