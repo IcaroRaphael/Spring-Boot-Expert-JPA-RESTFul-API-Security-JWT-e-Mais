@@ -29,6 +29,14 @@ public class CidadeService {
         cidadeRepository.findByNomeContainingIgnoreCase("za").forEach(System.out::println);
     }
 
+    public void listarCidadesPorNomeSqlNativo(){
+        cidadeRepository
+                .findByNomeSqlNativo("Fortaleza")
+                .stream()
+                .map(cidadeProjection -> new Cidade(cidadeProjection.getId(), cidadeProjection.getNome(), null))
+                .forEach(System.out::println);
+    }
+
     public void listarCidadesPorHabitantes(){
         cidadeRepository.findByHabitantes(11450000l).forEach(System.out::println);
         cidadeRepository.findByHabitantesLessThan(1000000l).forEach(System.out::println);
