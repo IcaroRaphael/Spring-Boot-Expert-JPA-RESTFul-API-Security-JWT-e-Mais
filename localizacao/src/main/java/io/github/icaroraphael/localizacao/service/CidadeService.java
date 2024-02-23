@@ -8,8 +8,11 @@ import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
+
+import static io.github.icaroraphael.localizacao.domain.repository.specs.CidadeSpecs.*;
 
 @Service
 public class CidadeService {
@@ -58,7 +61,22 @@ public class CidadeService {
     }
 
     public void listarCidadesByNomeSpec(){
-        Specification<Cidade> specs = CidadeSpecs.nomeEqual("São Paulo").and(CidadeSpecs.habitantesGreaterThan(1000000));
+        Specification<Cidade> specs = CidadeSpecs.nomeEqual("São Paulo").and(CidadeSpecs.habitantesGreaterThan(1000000l));
+        cidadeRepository.findAll(specs).forEach(System.out::println);
+    }
+
+    public void listarCidadesSpecsFiltroDinamico(Cidade filtro){
+        Specification<Cidade> specs = Specification.where((root, query, criteriaBuilder) -> criteriaBuilder.conjunction());
+        if(filtro.getId() != null){
+            specs = specs.and(idEqual(filtro.getId()));
+        }
+        if(StringUtils.hasText(filtro.getNome())){
+            specs = specs.and(nomeLike(filtro.getNome()));
+        }
+        if(filtro.getHabitantes() != null){
+            specs = specs.and(habitantesGreaterThan(filtro.getHabitantes()));
+        }
+
         cidadeRepository.findAll(specs).forEach(System.out::println);
     }
 }
