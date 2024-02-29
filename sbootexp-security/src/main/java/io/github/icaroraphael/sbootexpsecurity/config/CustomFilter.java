@@ -1,5 +1,7 @@
 package io.github.icaroraphael.sbootexpsecurity.config;
 
+import io.github.icaroraphael.sbootexpsecurity.domain.security.CustomAuthentication;
+import io.github.icaroraphael.sbootexpsecurity.domain.security.IdentificacaoUsuario;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,7 +25,13 @@ public class CustomFilter extends OncePerRequestFilter {
 
         if(secretHeader != null){
             if (secretHeader.equals("secr3t")) {
-                Authentication authentication = new UsernamePasswordAuthenticationToken("Muito secreto", null, List.of(new SimpleGrantedAuthority("USER")));
+                var identificacaoUsuario = new IdentificacaoUsuario(
+                        "id-secret",
+                        "Muito Secreto",
+                        "x-secret",
+                        List.of("USER")
+                );
+                Authentication authentication = new CustomAuthentication(identificacaoUsuario);
                 SecurityContext securityContext = SecurityContextHolder.getContext();
                 securityContext.setAuthentication(authentication);
             }
